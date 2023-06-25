@@ -1,5 +1,5 @@
 class StockDetails {
-  constructor({ companyName, tickerSymbol, logoUrl }: { companyName: string, tickerSymbol: string, logoUrl: string }) {
+  constructor({ companyName, tickerSymbol, logoUrl }: { companyName: string; tickerSymbol: string; logoUrl: string }) {
     this.logoUrl = logoUrl
     this.companyName = companyName
     this.tickerSymbol = tickerSymbol

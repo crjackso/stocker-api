@@ -22,13 +22,13 @@ export class PolygonService implements StockApi {
     this.rest = restClient(apiKey)
   }
 
-  public async previousClose(ticker: string): Promise<StockPreviousClose> {
+  public async previousClose(ticker: string): Promise<StockPreviousClose[]> {
     if (!ticker) throw new Error('Please specify a ticker')
 
     console.log(`Fetching details for ticker ${ticker}`)
     try {
       const previousCloseData = await this.rest.stocks.previousClose(ticker)
-      return this.translator.previousClose(previousCloseData)
+      return [this.translator.previousClose(previousCloseData)]
     } catch (error) {
       console.error('An error happened:', error)
       throw error
@@ -36,8 +36,6 @@ export class PolygonService implements StockApi {
   }
 
   public async portfolioDividends(): Promise<StockDividendLogs> {
-    // console.log('YO YO YO', typeof this.portfolio.map)
-    // return new StockDividendLogs()
     const fns = this.portfolio.map(async (ticker) => {
       return await this.dividends(ticker)
     })

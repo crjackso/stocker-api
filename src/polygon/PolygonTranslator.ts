@@ -13,8 +13,11 @@ class PolygonTranslator {
     const mostRecentClose = data.results?.find(Boolean)
 
     return new StockPreviousClose({
+      ticker: mostRecentClose.T,
       price: <number>mostRecentClose?.c,
-      asOfDateUnix: <number>mostRecentClose?.t
+      asOfDateUnix: <number>mostRecentClose?.t,
+      fiftyWeekHigh: null,
+      fiftyWeekLow: null
     })
   }
 
