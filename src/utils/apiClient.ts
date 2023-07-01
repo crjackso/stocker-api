@@ -3,37 +3,35 @@ import { $Fetch, ofetch } from 'ofetch'
 
 @Injectable()
 export class ApiClient {
-  apiKey: string
+  headers: Record<string, unknown>
   client: $Fetch
+  defaultQuery = {}
 
   public withBaseUrl(baseUrl: string): ApiClient {
     this.client = ofetch.create({ baseURL: baseUrl })
     return this
   }
 
-  public withApiKey(apiKey: string): ApiClient {
-    this.apiKey = apiKey
+  public withHeaders(headers: Record<string, unknown>): ApiClient {
+    this.headers = { headers }
     return this
   }
 
-  public async get<T>(url: string, query: string | object): Promise<T> {
-    return await this.client<T>(url, this.fetchOptions({ query }))
+  public withDefaultQuery(query: Record<string, unknown>): ApiClient {
+    this.defaultQuery = query
+    return this
   }
 
-  private fetchOptions(query = {}) {
-    let options = {
-      ...query
+  public async get<T>(url: string, query: Record<string, unknown>): Promise<T> {
+    return await this.client<T>(url, this.fetchOptions(query))
+  }
+
+  private fetchOptions(queryParams: Record<string, unknown>) {
+    const query = {
+      ...this.defaultQuery,
+      ...queryParams
     }
 
-    if (this.apiKey) {
-      options = {
-        ...options,
-        headers: {
-          Authorization: `apikey ${this.apiKey}`
-        }
-      }
-    }
-
-    return options
+    return { query, ...this.headers }
   }
 }

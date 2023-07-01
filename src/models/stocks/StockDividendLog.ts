@@ -1,34 +1,26 @@
 import { toDate, formatDate } from '@app/utils/date'
 import StockDetails from './StockDetails'
+import { StockDividendLogAttrs } from '@app/types'
 
 class StockDividendLog {
-  constructor({
-    tickerSymbol,
-    exDividendDate,
-    payDate,
-    stockDetails,
-    cashAmount
-  }: {
-    tickerSymbol: string
-    stockDetails: StockDetails
-    exDividendDate?: string
-    payDate?: string
-    cashAmount?: number
-  }) {
-    this.tickerSymbol = tickerSymbol
+  constructor({ ticker, exDividendDate, payDate, stockDetails, cashAmount }: StockDividendLogAttrs) {
+    this.ticker = ticker
     this.exDividendDate = toDate(exDividendDate)
     this.payDate = toDate(payDate)
     this.payDateFormatted = formatDate(payDate)
-    this.stockDetails = stockDetails
     this.cashAmount = cashAmount
+
+    if (stockDetails) {
+      this.stockDetails = new StockDetails(stockDetails)
+    }
   }
 
   cashAmount: number | undefined
   exDividendDate: Date | undefined
   payDate: Date | undefined
-  stockDetails: StockDetails
+  stockDetails?: StockDetails
   payDateFormatted: string | undefined
-  tickerSymbol: string | undefined
+  ticker: string | undefined
 }
 
 export default StockDividendLog

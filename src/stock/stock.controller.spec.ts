@@ -2,13 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { StockController } from './stock.controller'
 import TwelveDataServiceStub from '@app/tests/twelveData/twelveDataServiceStub'
 import { BadRequestException } from '@nestjs/common'
+import PolygonServiceStub from '@app/tests/polygon/polygonServiceStub'
 
 describe('StockController', () => {
   let controller: StockController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TwelveDataServiceStub],
+      providers: [TwelveDataServiceStub, PolygonServiceStub],
       controllers: [StockController]
     }).compile()
 

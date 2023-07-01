@@ -4,15 +4,15 @@ describe('general', () => {
   describe('uniqStrings', () => {
     describe('when a comma-delimited string is given', () => {
       it('returns uniq, comma-delimited string', () => {
-        const actual = uniqStrings<string>('foo,bar, bar,   bar')
+        const actual = uniqStrings('foo,bar, bar,   bar')
 
-        expect(actual).toEqual('foo,bar')
+        expect(actual).toEqual(['FOO', 'BAR'])
       })
     })
 
     describe('when an empty string is given', () => {
-      it('returns an empty string', () => {
-        expect(uniqStrings('')).toEqual('')
+      it('returns an empty array', () => {
+        expect(uniqStrings('')).toEqual([])
       })
     })
 
@@ -23,16 +23,14 @@ describe('general', () => {
       })
     })
 
-    describe('when an array of non-strings is given', () => {
-      it('throws an error indicating expected type', () => {
-        expect(() => uniqStrings([' MPW ', true, 2])).toThrowError('Please enter a string or string[]')
-      })
+    describe('returns the type given', () => {
+      const actual = uniqStrings('A,A,B,C,D, D ')
+
+      expect(actual).toEqual(['A', 'B', 'C', 'D'])
     })
 
-    describe('when a foreign type is given', () => {
-      it('throws an error indicating expected type', () => {
-        expect(() => uniqStrings(Boolean)).toThrowError('Please enter a string or string[]')
-      })
+    it('returns uppercased strings', () => {
+      expect(uniqStrings('gpn, voo')).toEqual(['GPN', 'VOO'])
     })
   })
 

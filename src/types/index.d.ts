@@ -12,3 +12,17 @@ export interface StockPreviousCloseAttrs {
   fiftyWeekLowFormatted?: string
   fiftyWeekHighFormatted?: string
 }
+
+export interface StockDividendLogAttrs {
+  ticker: string
+  stockDetails?: StockDetailsAttrs
+  exDividendDate?: string
+  payDate?: string
+  cashAmount?: number
+}
+
+export interface StockDetailsAttrs {
+  logoUrl: string
+  companyName: string
+  ticker: string
+}

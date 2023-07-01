@@ -21,18 +21,18 @@ class PolygonTranslator {
     })
   }
 
-  public dividends(tickerSymbol: string, tickerDetails: any, data: IDividendsResults) {
+  public dividends(ticker: string, tickerDetails: any, data: IDividendsResults) {
     const mostRecentDividendLog = data.results?.find(Boolean)
-    const stockDetails = this.stockDetails(tickerSymbol, tickerDetails)
+    const stockDetails = this.stockDetails(ticker, tickerDetails)
 
     if (!mostRecentDividendLog?.ex_dividend_date) {
       return new StockDividendLog({
-        tickerSymbol: tickerSymbol,
+        ticker,
         stockDetails
       })
     } else {
       return new StockDividendLog({
-        tickerSymbol,
+        ticker,
         stockDetails,
         exDividendDate: mostRecentDividendLog.ex_dividend_date,
         payDate: mostRecentDividendLog.pay_date,
@@ -41,10 +41,10 @@ class PolygonTranslator {
     }
   }
 
-  public stockDetails(tickerSymbol: string, tickerDetails: any) {
+  public stockDetails(ticker: string, tickerDetails: any) {
     return new StockDetails({
       companyName: tickerDetails.name,
-      tickerSymbol: tickerSymbol,
+      ticker,
       logoUrl: tickerDetails.branding?.logo_url?.concat(`?apiKey=${this.configService.get('POLYGON_API_KEY')}`)
     })
   }

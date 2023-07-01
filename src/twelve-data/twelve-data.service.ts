@@ -1,6 +1,5 @@
 import StockDividendLogs from '@app/models/stocks/StockDividendLogs'
 import StockPreviousClose from '@app/models/stocks/StockPreviousClose'
-import StockApi from '@app/stock/StockApi'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { FetchError } from 'ofetch'
@@ -10,21 +9,21 @@ import { IError } from '@app/types'
 import ApiError from '@app/models/ApiError'
 import { uniqStrings } from '@app/utils/general'
 import { ApiClient } from '@app/utils/apiClient'
+import StockApi from '@app/stock/types'
 
 @Injectable()
 export class TwelveDataService implements StockApi {
   portfolioDividends: () => Promise<StockDividendLogs>
-  private apiKey: string
   private static baseUrl = 'https://api.twelvedata.com'
 
   constructor(private configService: ConfigService, private apiClient: ApiClient) {
-    this.apiKey = this.configService.get('TWELVE_DATA_API_KEY')
-    if (!this.apiKey) throw new Error('Please configure Twelve Data API key')
-    this.apiClient.withApiKey(this.apiKey).withBaseUrl(TwelveDataService.baseUrl)
+    const apiKey = this.configService.get('TWELVE_DATA_API_KEY')
+    if (!apiKey) throw new Error('Please configure Twelve Data API key')
+    this.apiClient.withHeaders(this.requestHeaders(apiKey)).withBaseUrl(TwelveDataService.baseUrl)
   }
 
   public async previousClose(tickers: string): Promise<(StockPreviousClose | IError)[]> {
-    const symbol = uniqStrings<string>(tickers)
+    const symbol = uniqStrings(tickers).join(',')
     const response = await this.apiClient.get<Dictionary | TwelveDataPreviousCloseAttrs | FetchError>('quote', {
       symbol
     })
@@ -74,5 +73,11 @@ export class TwelveDataService implements StockApi {
 
   private isApiError(response): response is IApiError {
     return (response as IApiError).status === 'error'
+  }
+
+  private requestHeaders(apiKey: string): Record<string, string> {
+    return {
+      Authorization: `apikey ${apiKey}`
+    }
   }
 }

@@ -12,7 +12,10 @@ export const toCurrency = (value: number): string => {
   return formatter.format(value)
 }
 
-function uniq(strings: string[]): string[] {
+function uniq(strings: string | string[]): string[] {
+  if (typeof strings === 'string') {
+    strings = strings.split(',')
+  }
   return [...new Set(trimmedStrings(strings))]
 }
 
@@ -30,7 +33,7 @@ function trimmedStrings(strings: string[]): string[] {
     let value: string
 
     try {
-      value = str?.trim()
+      value = str?.trim()?.toUpperCase()
     } catch (error) {
       raiseExpectedTypesError('string', 'string[]')
     }
@@ -43,11 +46,11 @@ function trimmedStrings(strings: string[]): string[] {
   return trimmed
 }
 
-export function uniqStrings<T>(key: T): T {
+export function uniqStrings(key: string | string[]): string[] {
   if (Array.isArray(key)) {
-    return uniq(key) as T
+    return uniq(key)
   } else if (typeof key === 'string') {
-    return uniq(key.split(',')).join(',') as T
+    return uniq(key.split(','))
   } else {
     raiseExpectedTypesError('string', 'string[]')
   }
