@@ -2,10 +2,29 @@
 version: '3.9'
 
 services:
+  stocker-api:
+    build: .
+    container_name: stocker-api
+    ports:
+      - '3011:3011'
+    volumes:
+      - v-stocker-api:/app/node_modules
+      - ./:/app
+    networks:
+      - stocker
   db:
     image: postgres:14-alpine
+    container_name: stocker-postgres-db
     ports:
       - 5434:5432
     restart: always
     env_file:
       - .env
+    networks:
+      - stocker
+networks:
+  stocker:
+    external: true
+    name: stocker
+volumes:
+  v-stocker-api:
