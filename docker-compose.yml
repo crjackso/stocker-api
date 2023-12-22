@@ -2,9 +2,22 @@
 version: '3.9'
 
 services:
+  nginx:
+    build:
+      context: .
+      dockerfile: dockerfiles/nginx.dockerfile
+    ports:
+      - '80:80'
+    restart: always
+    networks:
+      - stocker
   stocker-api:
-    build: .
+    build:
+      context: .
+      dockerfile: dockerfiles/stocker-api.dockerfile
     container_name: stocker-api
+    env_file:
+      - .env
     ports:
       - '3011:3011'
     volumes:
@@ -12,6 +25,8 @@ services:
       - ./:/app
     networks:
       - stocker
+    depends_on:
+      - nginx
   db:
     image: postgres:14-alpine
     container_name: stocker-postgres-db
