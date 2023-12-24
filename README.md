@@ -71,3 +71,18 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Run Locally
+
+You can run the application via Docker Compose with the following command:
+
+```
+docker-compose up -d --build
+```
+
+## Production Environment
+
+You can SSH to the stocker-api EC2 instance with the following command:
+```
+ssh -i "stocker-api.pem" ec2-user@{STOCKER_API_EC2_IP}
+```

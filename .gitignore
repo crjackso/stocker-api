@@ -38,3 +38,4 @@ src/secrets.json
 secrets.json
 
 .env
+*.pem
