@@ -6,7 +6,6 @@ import { FetchError } from 'ofetch'
 import { Dictionary, IApiError, TwelveDataPreviousCloseAttrs } from './types'
 import CompanyProfile from '@app/models/stocks/CompanyProfile'
 import { IError } from '@app/types'
-import ApiError from '@app/models/ApiError'
 import { uniqStrings } from '@app/utils/general'
 import { ApiClient } from '@app/utils/apiClient'
 import StockApi from '@app/stock/types'
@@ -28,28 +27,34 @@ export class TwelveDataService implements StockApi {
       symbol
     })
 
-    if (this.isError(response)) {
-      throw new Error(response.message)
-    }
-
     return this.mapPreviousCloseQuotes(response)
   }
 
   private mapPreviousCloseQuotes(response: Dictionary | TwelveDataPreviousCloseAttrs): (StockPreviousClose | IError)[] {
-    if (this.isSingleQuote(response)) {
-      return [this.mapPreviousCloseQuote(response)]
-    } else {
-      return Object.values(response).map((previousClose: TwelveDataPreviousCloseAttrs) => {
-        return this.mapPreviousCloseQuote(previousClose)
-      })
+    const quotes = []
+    const twelveData = this.pluralizePreviousClose(response)
+
+    for (const entry of Object.entries(twelveData)) {
+      if (!this.isApiError(entry[1])) {
+        quotes.push(this.mapPreviousCloseQuote(entry[1]))
+      }
     }
+    return quotes
   }
 
-  private mapPreviousCloseQuote(quote: TwelveDataPreviousCloseAttrs | IApiError): StockPreviousClose | IError {
-    if (this.isApiError(quote)) {
-      return new ApiError(quote.message)
+  private pluralizePreviousClose(response: TwelveDataPreviousCloseAttrs | Dictionary) {
+    if (response.symbol) {
+      // if successful response is a singular object
+      return [response]
+    } else if (this.isApiError(response)) {
+      // else if unsuccessful response is a singular object
+      return []
     }
 
+    return response
+  }
+
+  private mapPreviousCloseQuote(quote: TwelveDataPreviousCloseAttrs): StockPreviousClose | IError {
     return new StockPreviousClose({
       ticker: quote.symbol,
       price: parseFloat(quote.close),
@@ -63,15 +68,7 @@ export class TwelveDataService implements StockApi {
     })
   }
 
-  private isSingleQuote(response): response is TwelveDataPreviousCloseAttrs {
-    return !!(response as TwelveDataPreviousCloseAttrs).symbol
-  }
-
-  private isError(response): response is FetchError {
-    return response instanceof FetchError || response.status === 'error'
-  }
-
-  private isApiError(response): response is IApiError {
+  private isApiError(response: any): response is IApiError {
     return (response as IApiError).status === 'error'
   }
 

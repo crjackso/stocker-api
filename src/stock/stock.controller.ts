@@ -26,6 +26,10 @@ export class StockController {
       throw new BadRequestException('No ticker symbols given')
     }
 
-    return await this.stockService.previousClose(tickers)
+    try {
+      return await this.stockService.previousClose(tickers)
+    } catch (error) {
+      throw new BadRequestException('An unexpected error occurred')
+    }
   }
 }
