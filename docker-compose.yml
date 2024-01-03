@@ -11,11 +11,11 @@ services:
     restart: always
     networks:
       - stocker
-  stocker-api:
+  api:
     build:
       context: .
-      dockerfile: dockerfiles/stocker-api.dockerfile
-    container_name: stocker-api
+      dockerfile: dockerfiles/api.dockerfile
+    container_name: api
     env_file:
       - .env
     ports:
