@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { TwelveDataService } from './twelve-data.service'
-import ConfigServiceStub from '@app/tests/ConfigServiceStub'
+import ConfigServiceStub from '@app/tests/configServiceStub'
 import ApiClientStub from '@app/tests/apiClientStub'
 import { ApiClient } from '@app/utils/apiClient'
 import StockPreviousClose from '@app/models/stocks/StockPreviousClose'
