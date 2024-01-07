@@ -1,16 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { BadRequestException } from '@nestjs/common'
+import { CacheModule } from '@nestjs/cache-manager'
 import { StockController } from './stock.controller'
 import TwelveDataServiceStub from '@app/tests/twelveData/twelveDataServiceStub'
-import { BadRequestException } from '@nestjs/common'
-import PolygonServiceStub from '@app/tests/polygon/polygonServiceStub'
+import MarketStackServiceStub from '@app/tests/market-stack/marketStackServiceStub'
 
 describe('StockController', () => {
   let controller: StockController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TwelveDataServiceStub, PolygonServiceStub],
-      controllers: [StockController]
+      providers: [TwelveDataServiceStub, MarketStackServiceStub],
+      controllers: [StockController],
+      imports: [
+        CacheModule.register({
+          isGlobal: true,
+          ttl: 8.64e7
+        })
+      ]
     }).compile()
 
     controller = module.get<StockController>(StockController)

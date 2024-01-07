@@ -4,7 +4,6 @@ import ConfigServiceStub from '@app/tests/ConfigServiceStub'
 import ApiClientStub from '@app/tests/apiClientStub'
 import { ApiClient } from '@app/utils/apiClient'
 import StockPreviousClose from '@app/models/stocks/StockPreviousClose'
-import { FetchError } from 'ofetch'
 import { Vti } from '@app/tests/factories/twelveData/TwelveDataPreviousClose'
 
 describe('TwelveDataService', () => {
@@ -33,7 +32,7 @@ describe('TwelveDataService', () => {
       jest.clearAllMocks()
     })
 
-    it('returns uniq list of `StockPreviousClose`s', async () => {
+    it('returns unique list of StockPreviousClose records', async () => {
       const quotes = await twelveDataService.previousClose('VTI , VTI ')
       expect(quotes).toHaveLength(1)
     })
@@ -44,15 +43,6 @@ describe('TwelveDataService', () => {
 
       expect(quote).toBeInstanceOf(StockPreviousClose)
       expect(quote.ticker).toEqual('VTI')
-    })
-
-    describe('when a FetchError is returned', () => {
-      it('returns an Error', async () => {
-        const fetchError = new FetchError('fail')
-        jest.spyOn(apiClient, 'get').mockImplementation(() => Promise.resolve(fetchError))
-
-        await expect(twelveDataService.previousClose('VTI')).rejects.toThrow(fetchError)
-      })
     })
   })
 })

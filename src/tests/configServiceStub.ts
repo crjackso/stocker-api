@@ -6,9 +6,11 @@ const ConfigServiceStub = {
     get: jest.fn((Key: string, DefaultValue: string) => {
       switch (Key) {
         case 'TWELVE_DATA_API_KEY':
-          return '123-456-XYZ'
+          return 'test'
         case 'POLYGON_API_KEY':
-          return '248-567-ABC'
+          return 'test'
+        case 'MARKET_STACK_API_KEY':
+          return 'test'
         default:
           return DefaultValue
       }

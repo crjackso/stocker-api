@@ -20,6 +20,7 @@ export class StockController {
 
     return this.dividendService.portfolioDividends(tickers)
   }
+
   @Get()
   async portfolio(@Query('tickers') tickers: string): Promise<(StockPreviousClose | IError)[] | ApiError> {
     if (!tickers) {

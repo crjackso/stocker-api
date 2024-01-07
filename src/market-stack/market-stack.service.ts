@@ -41,19 +41,11 @@ export class MarketStackService implements StockApi {
         symbols
       })
 
-      // if (this.isApiError(response)) {
-      //   return new ApiError(response.message)
-      // }
-
       return this.translator.translateDividends(response)
     } catch (error) {
       return new ApiError(error.message)
     }
   }
-
-  // private isApiError(response): response is IError {
-  //   return response.statusCode !== 200
-  // }
 
   private initializeApiClient(apiKey: string) {
     this.apiClient.withBaseUrl(this.baseUrl).withDefaultQuery({ access_key: apiKey })
