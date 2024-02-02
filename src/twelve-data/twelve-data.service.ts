@@ -1,6 +1,6 @@
 import StockDividendLogs from '@app/models/stocks/StockDividendLogs'
 import StockPreviousClose from '@app/models/stocks/StockPreviousClose'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { FetchError } from 'ofetch'
 import { Dictionary, IApiError, TwelveDataPreviousCloseAttrs } from './types'
@@ -12,20 +12,27 @@ import StockApi from '@app/stock/types'
 
 @Injectable()
 export class TwelveDataService implements StockApi {
+  private readonly logger = new Logger(TwelveDataService.name)
   portfolioDividends: () => Promise<StockDividendLogs>
   private static baseUrl = 'https://api.twelvedata.com'
 
   constructor(private configService: ConfigService, private apiClient: ApiClient) {
     const apiKey = this.configService.get('TWELVE_DATA_API_KEY')
     if (!apiKey) throw new Error('Please configure Twelve Data API key')
+    this.logger.log(
+      `The TwelveData API key has been retrieved successfully: ${JSON.stringify(this.requestHeaders(apiKey))}`
+    )
     this.apiClient.withHeaders(this.requestHeaders(apiKey)).withBaseUrl(TwelveDataService.baseUrl)
   }
 
   public async previousClose(tickers: string): Promise<(StockPreviousClose | IError)[]> {
     const symbol = uniqStrings(tickers).join(',')
+    this.logger.log(`Querying previous close information for ${symbol}`)
     const response = await this.apiClient.get<Dictionary | TwelveDataPreviousCloseAttrs | FetchError>('quote', {
       symbol
     })
+
+    this.logger.log(`Previous close response: ${JSON.stringify(response)}`)
 
     return this.mapPreviousCloseQuotes(response)
   }
