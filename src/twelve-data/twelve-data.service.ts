@@ -19,9 +19,6 @@ export class TwelveDataService implements StockApi {
   constructor(private configService: ConfigService, private apiClient: ApiClient) {
     const apiKey = this.configService.get('TWELVE_DATA_API_KEY')
     if (!apiKey) throw new Error('Please configure Twelve Data API key')
-    this.logger.log(
-      `The TwelveData API key has been retrieved successfully: ${JSON.stringify(this.requestHeaders(apiKey))}`
-    )
     this.apiClient.withHeaders(this.requestHeaders(apiKey)).withBaseUrl(TwelveDataService.baseUrl)
   }
 
