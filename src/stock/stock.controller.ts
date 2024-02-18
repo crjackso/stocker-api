@@ -10,7 +10,10 @@ import { CacheInterceptor } from '@nestjs/cache-manager'
 @UseInterceptors(CacheInterceptor)
 @Controller('stocks')
 export class StockController {
-  constructor(private readonly stockService: TwelveDataService, private readonly dividendService: MarketStackService) {}
+  constructor(
+    private readonly stockService: TwelveDataService,
+    private readonly dividendService: MarketStackService
+  ) {}
 
   @Get('dividends')
   async dividends(@Query('tickers') tickers: string): Promise<StockDividendLogs | IError> {

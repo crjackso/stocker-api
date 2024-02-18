@@ -15,7 +15,10 @@ export class PolygonService implements StockApi {
   private rest: IRestClient
   private translator: PolygonTranslator
 
-  constructor(private configService: ConfigService, @Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {
+  constructor(
+    private configService: ConfigService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
+  ) {
     const apiKey = this.configService.get('POLYGON_API_KEY')
     if (!apiKey) throw new Error('Please configure Polygon API key')
 
@@ -58,8 +61,6 @@ export class PolygonService implements StockApi {
       const dividends = this.translator.dividends(ticker, tickerDetails, dividendData)
 
       await this.cacheManager.set('blah', dividends)
-
-      const cachedData = this.cacheManager.get('blah')
 
       return dividends
     } catch (error) {

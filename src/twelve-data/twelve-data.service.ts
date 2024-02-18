@@ -16,7 +16,10 @@ export class TwelveDataService implements StockApi {
   portfolioDividends: () => Promise<StockDividendLogs>
   private static baseUrl = 'https://api.twelvedata.com'
 
-  constructor(private configService: ConfigService, private apiClient: ApiClient) {
+  constructor(
+    private configService: ConfigService,
+    private apiClient: ApiClient
+  ) {
     const apiKey = this.configService.get('TWELVE_DATA_API_KEY')
     if (!apiKey) throw new Error('Please configure Twelve Data API key')
     this.apiClient.withHeaders(this.requestHeaders(apiKey)).withBaseUrl(TwelveDataService.baseUrl)
