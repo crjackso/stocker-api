@@ -8,6 +8,8 @@ import { CacheModule } from '@nestjs/cache-manager'
 import { HealthModule } from './health/health.module'
 import { GraphQLModule } from '@nestjs/graphql'
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
+import { join } from 'path'
+import { GraphQLDateTime } from 'graphql-iso-date'
 
 @Module({
   imports: [
@@ -22,7 +24,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
       ttl: 8.64e7
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver
+      driver: ApolloDriver,
+      typePaths: ['./**/*.graphql'],
+      resolvers: { GraphQLDateTime },
+      definitions: {
+        path: join(process.cwd(), 'src/graphql.ts'),
+        outputAs: 'class'
+      }
     })
   ]
 })
