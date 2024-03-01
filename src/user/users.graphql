@@ -1,11 +1,12 @@
-scalar GraphQLDateTime
+scalar EmailAddress
+scalar DateTime
 
 type User {
   id: Int!
-  username: String!
   firstName: String!
   lastName: String!
-  createdAt: GraphQLDateTime!
+  email: EmailAddress!
+  createdAt: DateTime!
 }
 
 type Query {

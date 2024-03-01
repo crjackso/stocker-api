@@ -1,26 +1,47 @@
-// import { PrismaService } from '@app/prisma.service'
-import { Injectable } from '@nestjs/common'
-// import { User } from '@prisma/client'
-// import UserCreate from './userCreate'
+import { PrismaService } from '@app/prisma/prisma.service'
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
+import { CreateUserDto } from './dto'
+import * as argon2 from 'argon2'
+import { isUniqueConstraintViolation } from '@app/prisma/utils'
 
 @Injectable()
 export class UserService {
-  constructor() {}
-  // constructor(readonly prisma: PrismaService) {}
+  constructor(readonly prisma: PrismaService) {}
 
-  // getAllUsers(): Promise<User[]> {
-  //   return this.prisma.user.findMany()
-  // }
+  async getUser(id: number) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id
+      }
+    })
 
-  // createUser(userCreate: UserCreate): Promise<User> {
-  //   const user = this.prisma.user.create({
-  //     data: {
-  //       name: userCreate.name,
-  //       email: userCreate.email,
-  //       hash: '23'
-  //     }
-  //   })
+    if (!user) {
+      throw new NotFoundException('User was not found in the system')
+    }
 
-  //   return user
-  // }
+    delete user.password
+
+    return user
+  }
+
+  async createUser(dto: CreateUserDto) {
+    const password = await argon2.hash(dto.password)
+
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          ...dto,
+          password
+        }
+      })
+
+      return user
+    } catch (error) {
+      if (isUniqueConstraintViolation(error)) {
+        throw new ForbiddenException('This email is already in the system')
+      }
+
+      throw error
+    }
+  }
 }

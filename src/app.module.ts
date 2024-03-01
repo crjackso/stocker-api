@@ -9,7 +9,7 @@ import { HealthModule } from './health/health.module'
 import { GraphQLModule } from '@nestjs/graphql'
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { join } from 'path'
-import { GraphQLDateTime } from 'graphql-iso-date'
+import { PrismaModule } from './prisma/prisma.module'
 
 @Module({
   imports: [
@@ -26,12 +26,12 @@ import { GraphQLDateTime } from 'graphql-iso-date'
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
-      resolvers: { GraphQLDateTime },
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
         outputAs: 'class'
       }
-    })
+    }),
+    PrismaModule
   ]
 })
 export class AppModule {}

@@ -1,4 +1,3 @@
-
 /*
  * -------------------------------------------------------
  * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
@@ -10,9 +9,9 @@
 
 export class User {
     id: number;
-    username: string;
     firstName: string;
     lastName: string;
+    email: EmailAddress;
     createdAt: DateTime;
 }
 
@@ -20,5 +19,6 @@ export abstract class IQuery {
     abstract getUser(id: number): Nullable<User> | Promise<Nullable<User>>;
 }
 
+export type EmailAddress = any;
 export type DateTime = any;
 type Nullable<T> = T | null;
