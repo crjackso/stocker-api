@@ -31,10 +31,14 @@ services:
     image: postgres:14-alpine
     container_name: stocker-postgres-db
     ports:
-      - 5434:5432
+      - 5432:5432
     restart: always
     env_file:
       - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${POSTGRES_SCHEMA}&connect_timeout=30&pool_timeout=30
+    volumes:
+      - postgres:/var/lib/postgresql/data
     networks:
       - stocker
 networks:
@@ -43,3 +47,5 @@ networks:
     name: stocker
 volumes:
   v-stocker-api:
+  postgres:
+    name: v-stocker-pg-data
