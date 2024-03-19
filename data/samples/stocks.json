@@ -1,0 +1,37 @@
+[
+  {
+    "companyName": "Target Corporation",
+    "tickerSymbol": "TGT",
+    "lastPrice": 169.72
+  },
+  {
+    "companyName": "Global Payments Inc",
+    "tickerSymbol": "GPN",
+    "lastPrice": 129.63
+  },
+  {
+    "companyName": "Vanguard S&P 500 ETF",
+    "tickerSymbol": "VOO",
+    "lastPrice": 470.39
+  },
+  {
+    "companyName": "VanEck Semiconductor ETF",
+    "tickerSymbol": "SMH",
+    "lastPrice": 224.99
+  },
+  {
+    "companyName": "Schwab US Dividend Equity ETF",
+    "tickerSymbol": "SCHD",
+    "lastPrice": 78.43
+  },
+  {
+    "companyName": "Avantis US Small Cap Value ETF",
+    "tickerSymbol": "AVUV",
+    "lastPrice": 89.73
+  },
+  {
+    "companyName": "Apple Inc",
+    "tickerSymbol": "AAPL",
+    "lastPrice": 170.73
+  }
+]

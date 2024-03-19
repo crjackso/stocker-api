@@ -14,13 +14,41 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   firstName String
   lastName  String
-  email     String   @unique
+  email     String      @unique
   password  String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  portfolio Portfolio[]
+
+  @@index([email])
+  @@map("users")
+}
+
+model Portfolio {
+  id     Int     @id @default(autoincrement())
+  title  String
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int
+  stocks Stock[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("users")
+  @@unique([userId, title])
+  @@map("portfolios")
+}
+
+model Stock {
+  id           Int         @id @default(autoincrement())
+  companyName  String      @unique
+  tickerSymbol String      @unique
+  lastPrice    Float
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  portfolios   Portfolio[]
+
+  @@map("stocks")
 }

@@ -93,5 +93,8 @@
   },
   "_moduleAliases": {
     "@app": "./dist"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }

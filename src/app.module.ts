@@ -10,8 +10,11 @@ import { GraphQLModule } from '@nestjs/graphql'
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { join } from 'path'
 import { PrismaModule } from './prisma/prisma.module'
+import { LoggingPlugin } from './utils/graphql/logging.plugin'
+import { EmailAddressResolver } from 'graphql-scalars'
 
 @Module({
+  providers: [LoggingPlugin],
   imports: [
     UserModule,
     StockModule,
@@ -25,9 +28,11 @@ import { PrismaModule } from './prisma/prisma.module'
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./**/*.graphql'],
+      formatError: (err) => ({ message: err.message, status: err.extensions.code }),
+      resolvers: { EmailAddress: EmailAddressResolver },
+      autoSchemaFile: join(process.cwd(), 'stocker-schema.graphql'),
       definitions: {
-        path: join(process.cwd(), 'src/graphql.ts'),
+        path: join(process.cwd(), 'src/types/graphql/generated.ts'),
         outputAs: 'class'
       }
     }),
