@@ -1,12 +1,12 @@
-import StockPreviousClose from '@app/models/stocks/StockPreviousClose'
+import Stock from '@app/stock/models/Stock'
 import { MarketStackService } from '@app/market-stack/market-stack.service'
-import { IError } from '@app/types'
-import { Vti } from '../factories/StockPreviousClose'
+import { IError } from '@app/types/error'
+import { Vti } from '../factories/Stock'
 
 const MarketStackServiceStub = {
   provide: MarketStackService,
   useValue: {
-    previousClose: async (): Promise<(StockPreviousClose | IError)[]> => {
+    previousClose: async (): Promise<(Stock | IError)[]> => {
       return Promise.resolve([Vti])
     }
   }

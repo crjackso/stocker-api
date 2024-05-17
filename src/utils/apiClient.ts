@@ -22,7 +22,7 @@ export class ApiClient {
     return this
   }
 
-  public async get<T>(url: string, query: Record<string, unknown>): Promise<T> {
+  public async get<T>(url: string, query: Record<string, unknown> = {}): Promise<T> {
     return await this.client<T>(url, this.fetchOptions(query))
   }
 

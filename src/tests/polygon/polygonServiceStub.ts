@@ -1,12 +1,12 @@
 import { PolygonService } from '@app/polygon/polygon.service'
-import StockDividendLogs from '@app/models/stocks/StockDividendLogs'
-import { stockDividendLogs } from '../factories/StockDividendLogs'
+import { Google } from '../factories/StockDividendLog'
+import StockDividendLog from '@app/stock/models/StockDividendLog'
 
 const PolygonServiceStub = {
   provide: PolygonService,
   useValue: {
-    portfolioDividends: async (): Promise<StockDividendLogs> => {
-      return Promise.resolve(stockDividendLogs)
+    portfolioDividends: async (): Promise<StockDividendLog[]> => {
+      return Promise.resolve([Google])
     }
   }
 }

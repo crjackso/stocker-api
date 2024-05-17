@@ -2,36 +2,85 @@
   {
     "companyName": "Target Corporation",
     "tickerSymbol": "TGT",
-    "lastPrice": 169.72
+    "lastPrice": 157.51,
+    "fiftyTwoWeekHigh": 181.86,
+    "fiftyTwoWeekLow": 102.93
   },
   {
     "companyName": "Global Payments Inc",
     "tickerSymbol": "GPN",
-    "lastPrice": 129.63
+    "lastPrice": 108.82,
+    "fiftyTwoWeekHigh": 141.78,
+    "fiftyTwoWeekLow": 95.12
   },
   {
     "companyName": "Vanguard S&P 500 ETF",
     "tickerSymbol": "VOO",
-    "lastPrice": 470.39
+    "lastPrice": 470.39,
+    "fiftyTwoWeekHigh": 487.23,
+    "fiftyTwoWeekLow": 375.95
   },
   {
     "companyName": "VanEck Semiconductor ETF",
     "tickerSymbol": "SMH",
-    "lastPrice": 224.99
+    "lastPrice": 224.99,
+    "fiftyTwoWeekHigh": 239.14,
+    "fiftyTwoWeekLow": 125.71
   },
   {
     "companyName": "Schwab US Dividend Equity ETF",
     "tickerSymbol": "SCHD",
-    "lastPrice": 78.43
+    "lastPrice": 80.15,
+    "fiftyTwoWeekHigh": 80.82,
+    "fiftyTwoWeekLow": 66.67
+  },
+  {
+    "companyName": "Schwab US Broad Market ETF",
+    "tickerSymbol": "SCHB",
+    "lastPrice": 60.21,
+    "fiftyTwoWeekHigh": 262.73,
+    "fiftyTwoWeekLow": 202.44
+  },
+  {
+    "companyName": "Vanguard Total Stock Market Index Fund ETF",
+    "tickerSymbol": "VTI",
+    "lastPrice": 262.64,
+    "fiftyTwoWeekHigh": 262.73,
+    "fiftyTwoWeekLow": 202.44
   },
   {
     "companyName": "Avantis US Small Cap Value ETF",
     "tickerSymbol": "AVUV",
-    "lastPrice": 89.73
+    "lastPrice": 93.77,
+    "fiftyTwoWeekHigh": 94.14,
+    "fiftyTwoWeekLow": 69.96
   },
   {
     "companyName": "Apple Inc",
     "tickerSymbol": "AAPL",
-    "lastPrice": 170.73
+    "lastPrice": 170.73,
+    "fiftyTwoWeekHigh": 199.14,
+    "fiftyTwoWeekLow": 164.08
+  },
+  {
+    "companyName": "Fidelity MSCI Information Technology Index ETF",
+    "tickerSymbol": "FTEC",
+    "lastPrice": 152.98,
+    "fiftyTwoWeekHigh": 145.14,
+    "fiftyTwoWeekLow": 164.08
+  },
+  {
+    "companyName": "Amgen",
+    "tickerSymbol": "AMGN",
+    "lastPrice": 300.30,
+    "fiftyTwoWeekHigh": 320.14,
+    "fiftyTwoWeekLow": 202.08
+  },
+  {
+    "companyName": "Amazon",
+    "tickerSymbol": "AMZN",
+    "lastPrice": 188.76,
+    "fiftyTwoWeekHigh": 201.14,
+    "fiftyTwoWeekLow": 175.08
   }
 ]

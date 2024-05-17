@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-import { TransientStock } from '@app/stock/types/stock'
+import { Prisma, PrismaClient } from '@prisma/client'
 import * as stocks from './../../data/samples/stocks.json'
 
 const upsertStocks = async (prisma: PrismaClient): Promise<void> => {
@@ -9,16 +8,20 @@ const upsertStocks = async (prisma: PrismaClient): Promise<void> => {
   }
 }
 
-const upsertStock = async (prisma: PrismaClient, seed: TransientStock) => {
+const upsertStock = async (prisma: PrismaClient, seed: Prisma.StockUncheckedCreateInput) => {
   return await prisma.stock.upsert({
     where: { tickerSymbol: seed.tickerSymbol },
     update: {
-      lastPrice: seed.lastPrice
+      lastPrice: seed.lastPrice,
+      fiftyTwoWeekHigh: seed.fiftyTwoWeekHigh,
+      fiftyTwoWeekLow: seed.fiftyTwoWeekLow
     },
     create: {
       tickerSymbol: seed.tickerSymbol,
       companyName: seed.companyName,
-      lastPrice: seed.lastPrice
+      lastPrice: seed.lastPrice,
+      fiftyTwoWeekHigh: seed.fiftyTwoWeekHigh,
+      fiftyTwoWeekLow: seed.fiftyTwoWeekLow
     }
   })
 }

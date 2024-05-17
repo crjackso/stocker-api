@@ -11,6 +11,8 @@ const ConfigServiceStub = {
           return 'test'
         case 'MARKET_STACK_API_KEY':
           return 'test'
+        case 'FINANCIAL_MODELING_PREP_API_KEY':
+          return 'test'
         default:
           return DefaultValue
       }

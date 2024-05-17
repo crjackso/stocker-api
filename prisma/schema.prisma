@@ -42,13 +42,34 @@ model Portfolio {
 }
 
 model Stock {
-  id           Int         @id @default(autoincrement())
-  companyName  String      @unique
-  tickerSymbol String      @unique
-  lastPrice    Float
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  portfolios   Portfolio[]
+  id                Int           @id @default(autoincrement())
+  companyName       String        @unique
+  tickerSymbol      String        @unique
+  assetType         String?
+  logoUrl           String?
+  lastPrice         Float
+  lastPriceAsOfDate DateTime      @default(now())
+  fiftyTwoWeekLow   Float?
+  fiftyTwoWeekHigh  Float?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  portfolios        Portfolio[]
+  DividendLog       DividendLog[]
 
   @@map("stocks")
+}
+
+model DividendLog {
+  id             Int       @id @default(autoincrement())
+  stock          Stock     @relation(fields: [tickerSymbol], references: [tickerSymbol])
+  tickerSymbol   String
+  cashAmount     Float
+  exDividendDate DateTime?
+  recordDate     DateTime?
+  createdAt      DateTime  @default(now())
+  payDate        DateTime
+  updatedAt      DateTime  @updatedAt
+
+  @@unique([tickerSymbol, payDate], name: "idx_unique_ticker_pay_date")
+  @@map("dividend_logs")
 }

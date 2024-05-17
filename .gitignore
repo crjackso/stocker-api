@@ -39,3 +39,6 @@ secrets.json
 
 .env
 *.pem
+
+prisma/generated/*
+src/types/graphql/generated.ts

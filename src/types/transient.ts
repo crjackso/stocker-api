@@ -1,1 +1,1 @@
-export type Transient<T> = Omit<T, 'id'>
+export type Transient<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt'>

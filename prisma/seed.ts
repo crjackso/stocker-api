@@ -1,10 +1,12 @@
 import { PrismaClient } from '@prisma/client'
 import upsertStocks from './seeds/stocks'
+import upsertUsers from './seeds/users'
 
 const prisma = new PrismaClient()
 
 async function main() {
   await upsertStocks(prisma)
+  await upsertUsers(prisma)
 }
 
 main()

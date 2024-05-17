@@ -1,3 +1,5 @@
+import { IError } from '@app/types/error'
+
 export const groupBy = (x: Array<any>, f: (a, b, c) => any) =>
   x.reduce((a, b, i) => ((a[f(b, i, x)] ||= []).push(b), a), {})
 
@@ -54,4 +56,8 @@ export function uniqStrings(key: string | string[]): string[] {
   } else {
     raiseExpectedTypesError('string', 'string[]')
   }
+}
+
+export function isError(response: object | IError): response is IError {
+  return 'error' in response
 }

@@ -1,4 +1,4 @@
-import { IError } from '@app/types'
+import { IError } from '@app/types/error'
 
 class ApiError implements IError {
   public readonly error = true
