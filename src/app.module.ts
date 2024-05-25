@@ -6,18 +6,27 @@ import { TwelveDataModule } from './twelve-data/twelve-data.module'
 import { MarketStackModule } from './market-stack/market-stack.module'
 import { CacheModule } from '@nestjs/cache-manager'
 import { HealthModule } from './health/health.module'
-import { GraphQLModule } from '@nestjs/graphql'
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { join } from 'path'
 import { PrismaModule } from './prisma/prisma.module'
+import { LoggingPlugin } from './utils/graphql/logging.plugin'
+import { EmailAddressResolver } from 'graphql-scalars'
+import { GraphQLModule } from '@nestjs/graphql'
+import { TasksModule } from './tasks/tasks.module'
+import { AlphaVantageModule } from './alpha-vantage/alpha-vantage.module'
+import { FinancialModelingPrepModule } from './financial-modeling-prep/financial-modeling-prep.module'
+import { MarketModule } from './market/market.module'
 
 @Module({
+  providers: [LoggingPlugin],
   imports: [
+    PrismaModule,
     UserModule,
     StockModule,
     PolygonModule,
     TwelveDataModule,
     MarketStackModule,
+    FinancialModelingPrepModule,
     HealthModule,
     CacheModule.register({
       isGlobal: true,
@@ -25,13 +34,14 @@ import { PrismaModule } from './prisma/prisma.module'
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./**/*.graphql'],
-      definitions: {
-        path: join(process.cwd(), 'src/graphql.ts'),
-        outputAs: 'class'
-      }
+      formatError: (err) => ({ message: err.message, status: err.extensions.code }),
+      resolvers: { EmailAddress: EmailAddressResolver },
+      autoSchemaFile: join(process.cwd(), 'stocker-schema.graphql'),
+      sortSchema: true
     }),
-    PrismaModule
+    TasksModule,
+    AlphaVantageModule,
+    MarketModule
   ]
 })
-export class AppModule {}
+export class AppModule { }

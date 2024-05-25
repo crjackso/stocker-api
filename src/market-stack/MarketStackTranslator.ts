@@ -1,22 +1,24 @@
 import { Injectable } from '@nestjs/common'
-import StockDividendLogs from '@app/models/stocks/StockDividendLogs'
 import { DividendResponse } from './types'
-import StockDividendLog from '@app/models/stocks/StockDividendLog'
+import StockDividendLog from '@app/stock/models/StockDividendLog'
 
 @Injectable()
 class MarketStackTranslator {
-  public translateDividends(response: DividendResponse): StockDividendLogs {
+  public translateDividends(response: DividendResponse): StockDividendLog[] {
     if (!response?.data) throw new Error('MarketStack response was not received')
 
-    const logs = response.data.map((res) => {
+    return response.data.map((res) => {
       return new StockDividendLog({
-        ticker: res.symbol,
+        tickerSymbol: res.symbol,
         cashAmount: res.dividend,
-        payDate: res.date
+        payDate: res.date,
+        exDividendDate: this.randomDate(new Date(2012, 0, 1), new Date()) // TODO: Switch to data provider that provides this data point
       })
     })
+  }
 
-    return new StockDividendLogs(logs)
+  randomDate(start: Date, end: Date) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toString()
   }
 }
 

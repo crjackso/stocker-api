@@ -1,14 +1,13 @@
-import StockDividendLog from '@app/models/stocks/StockDividendLog'
-import StockDividendLogs from '@app/models/stocks/StockDividendLogs'
-import StockPreviousClose from '@app/models/stocks/StockPreviousClose'
+import Stock from '@app/stock/models/Stock'
 import { IRestClient, restClient } from '@polygon.io/client-js'
 import PolygonTranslator from './PolygonTranslator'
 import { ConfigService } from '@nestjs/config'
 import { uniqStrings } from '@app/utils/general'
-import StockApi from '@app/stock/types'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 import { Injectable, Inject } from '@nestjs/common'
+import { StockApi } from '@app/stock/types'
+import StockDividendLog from '@app/stock/models/StockDividendLog'
 
 @Injectable()
 export class PolygonService implements StockApi {
@@ -26,7 +25,7 @@ export class PolygonService implements StockApi {
     this.rest = restClient(apiKey)
   }
 
-  public async previousClose(ticker: string): Promise<StockPreviousClose[]> {
+  public async previousClose(ticker: string): Promise<Stock[]> {
     if (!ticker) throw new Error('Please specify a ticker')
 
     console.log(`Fetching details for ticker ${ticker}`)
@@ -39,14 +38,14 @@ export class PolygonService implements StockApi {
     }
   }
 
-  public async portfolioDividends(ticker: string): Promise<StockDividendLogs> {
+  public async portfolioDividends(ticker: string): Promise<StockDividendLog[]> {
     const tickers = uniqStrings(ticker)
 
     const fns = tickers.map(async (ticker) => {
       return await this.dividends(ticker)
     })
 
-    return new StockDividendLogs(await Promise.all(fns))
+    return await Promise.all(fns)
   }
 
   private async dividends(ticker: string): Promise<StockDividendLog> {

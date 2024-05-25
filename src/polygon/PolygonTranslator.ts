@@ -1,52 +1,44 @@
 import { IAggsPreviousClose, IDividendsResults } from '@polygon.io/client-js'
-import StockDetails from '@app/models/stocks/StockDetails'
-import StockDividendLog from '@app/models/stocks/StockDividendLog'
-import StockPreviousClose from '@app/models/stocks/StockPreviousClose'
 import { ConfigService } from '@nestjs/config'
 import { Injectable } from '@nestjs/common'
+import Stock from '@app/stock/models/Stock'
+import StockDividendLog from '@app/stock/models/StockDividendLog'
+import { fromUnix } from '@app/utils/date'
+import { AssetType } from '@app/stock/graphql/types/assetType.enum'
 
 @Injectable()
 class PolygonTranslator {
   constructor(private configService: ConfigService) {}
 
-  public previousClose(data: IAggsPreviousClose) {
+  public previousClose(data: IAggsPreviousClose): Stock {
     const mostRecentClose = data.results?.find(Boolean)
 
-    return new StockPreviousClose({
-      ticker: mostRecentClose.T,
-      price: <number>mostRecentClose?.c,
-      asOfDateUnix: <number>mostRecentClose?.t,
-      fiftyWeekHigh: null,
-      fiftyWeekLow: null
+    return new Stock({
+      tickerSymbol: mostRecentClose.T,
+      companyName: 'TODO', // TODO
+      assetType: AssetType.CommonStock, // TODO
+      lastPrice: <number>mostRecentClose?.c,
+      lastPriceAsOfDate: fromUnix(mostRecentClose?.t),
+      fiftyTwoWeekHigh: null,
+      fiftyTwoWeekLow: null
     })
   }
 
-  public dividends(ticker: string, tickerDetails: any, data: IDividendsResults) {
+  public dividends(tickerSymbol: string, tickerDetails: any, data: IDividendsResults) {
     const mostRecentDividendLog = data.results?.find(Boolean)
-    const stockDetails = this.stockDetails(ticker, tickerDetails)
 
     if (!mostRecentDividendLog?.ex_dividend_date) {
       return new StockDividendLog({
-        ticker,
-        stockDetails
+        tickerSymbol
       })
     } else {
       return new StockDividendLog({
-        ticker,
-        stockDetails,
+        tickerSymbol,
         exDividendDate: mostRecentDividendLog.ex_dividend_date,
         payDate: mostRecentDividendLog.pay_date,
         cashAmount: mostRecentDividendLog.cash_amount
       })
     }
-  }
-
-  public stockDetails(ticker: string, tickerDetails: any) {
-    return new StockDetails({
-      companyName: tickerDetails.name,
-      ticker,
-      logoUrl: tickerDetails.branding?.logo_url?.concat(`?apiKey=${this.configService.get('POLYGON_API_KEY')}`)
-    })
   }
 }
 

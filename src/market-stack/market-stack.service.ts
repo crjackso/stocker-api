@@ -1,16 +1,16 @@
-import StockDividendLogs from '@app/models/stocks/StockDividendLogs'
-import StockPreviousClose from '@app/models/stocks/StockPreviousClose'
+import Stock from '@app/stock/models/Stock'
 import MarketStackTranslator from './MarketStackTranslator'
 import { ConfigService } from '@nestjs/config'
 import { uniqStrings } from '@app/utils/general'
-import StockApi from '@app/stock/types'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 import { Injectable, Inject } from '@nestjs/common'
 import { ApiClient } from '@app/utils/apiClient'
 import { DividendResponse } from './types'
 import ApiError from '@app/models/ApiError'
-import { IError } from '@app/types'
+import { IError } from '@app/types/error'
+import { StockApi } from '@app/stock/types'
+import StockDividendLog from '@app/stock/models/StockDividendLog'
 
 @Injectable()
 export class MarketStackService implements StockApi {
@@ -29,11 +29,11 @@ export class MarketStackService implements StockApi {
     this.translator = new MarketStackTranslator()
   }
 
-  public async previousClose(): Promise<StockPreviousClose[]> {
+  public async previousClose(): Promise<Stock[]> {
     throw new Error('Not implemented')
   }
 
-  public async portfolioDividends(ticker: string): Promise<StockDividendLogs | IError> {
+  public async portfolioDividends(ticker: string): Promise<StockDividendLog[] | IError> {
     const symbols = uniqStrings(ticker).join(',')
 
     try {

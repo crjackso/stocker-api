@@ -14,13 +14,62 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   firstName String
   lastName  String
-  email     String   @unique
+  email     String      @unique
   password  String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  portfolio Portfolio[]
+
+  @@index([email])
+  @@map("users")
+}
+
+model Portfolio {
+  id     Int     @id @default(autoincrement())
+  title  String
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int
+  stocks Stock[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("users")
+  @@unique([userId, title])
+  @@map("portfolios")
+}
+
+model Stock {
+  id                Int           @id @default(autoincrement())
+  companyName       String        @unique
+  tickerSymbol      String        @unique
+  assetType         String?
+  logoUrl           String?
+  lastPrice         Float
+  lastPriceAsOfDate DateTime      @default(now())
+  fiftyTwoWeekLow   Float?
+  fiftyTwoWeekHigh  Float?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  portfolios        Portfolio[]
+  DividendLog       DividendLog[]
+
+  @@map("stocks")
+}
+
+model DividendLog {
+  id             Int       @id @default(autoincrement())
+  stock          Stock     @relation(fields: [tickerSymbol], references: [tickerSymbol])
+  tickerSymbol   String
+  cashAmount     Float
+  exDividendDate DateTime?
+  recordDate     DateTime?
+  createdAt      DateTime  @default(now())
+  payDate        DateTime
+  updatedAt      DateTime  @updatedAt
+
+  @@unique([tickerSymbol, payDate], name: "idx_unique_ticker_pay_date")
+  @@map("dividend_logs")
 }

@@ -1,6 +1,8 @@
-FROM node:21.2.0-alpine3.17
+FROM node:20.11.1-alpine3.18
 
 WORKDIR /app
+
+RUN apk add --update --no-cache python3 py3-pip g++ make
 
 COPY package.json .
 
