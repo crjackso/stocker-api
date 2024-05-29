@@ -81,9 +81,18 @@ type Mutation {
   upsertStock(input: StockUpdateInput!): StockType!
 }
 
+type PortfolioType {
+  id: Int!
+  stocks: [StockType!]
+  title: String!
+  user: UserType
+  userId: Int!
+}
+
 type Query {
   getDividend(id: Int!): StockDividendLogType
   getDividends(input: DividendWhereInput!): [StockDividendLogType!]
+  getPortfolio(id: Int!): PortfolioType
   getStock(tickerSymbol: String!): StockType
   getStocks(input: StockWhereInput!): [StockType!]!
   getUser(id: Float!): UserType!

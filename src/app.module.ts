@@ -16,6 +16,7 @@ import { TasksModule } from './tasks/tasks.module'
 import { AlphaVantageModule } from './alpha-vantage/alpha-vantage.module'
 import { FinancialModelingPrepModule } from './financial-modeling-prep/financial-modeling-prep.module'
 import { MarketModule } from './market/market.module'
+import { PortfolioModule } from './portfolio/portfolio.module';
 
 @Module({
   providers: [LoggingPlugin],
@@ -41,7 +42,8 @@ import { MarketModule } from './market/market.module'
     }),
     TasksModule,
     AlphaVantageModule,
-    MarketModule
+    MarketModule,
+    PortfolioModule
   ]
 })
 export class AppModule { }

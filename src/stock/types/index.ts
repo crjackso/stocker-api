@@ -31,3 +31,9 @@ export type MarketMoverResponse = {
   gainers: MarketMover[]
   losers: MarketMover[]
 }
+
+export type PortfolioSeedCreate = {
+  title: string
+  userId: number
+  tickerSymbols: string[]
+}

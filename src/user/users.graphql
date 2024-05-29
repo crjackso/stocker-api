@@ -1,15 +1,15 @@
-scalar EmailAddress
-scalar DateTime
+# scalar EmailAddress
+# scalar DateTime
 
-type User {
-  id: Int!
-  firstName: String!
-  lastName: String!
-  email: EmailAddress!
-  createdAt: DateTime!
-}
+# type User {
+#   id: Int!
+#   firstName: String!
+#   lastName: String!
+#   email: EmailAddress!
+#   createdAt: DateTime!
+# }
 
-type Query {
-  getUser(id: Int!): User
-  getUsers: [User]
-}
+# type Query {
+#   getUser(id: Int!): User
+#   getUsers: [User]
+# }
